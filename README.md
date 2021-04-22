@@ -4,5 +4,9 @@ Necesitará tener 6 terminales listas para usar, una sera para el balanceador de
 
 ## Comando CURL
 ~~~
-curl -is http://localhost:8080
+curl -is http://localhost:8080/hola
+~~~
+
+~~~
+curl -is http://localhost:8080/adios
 ~~~

@@ -52,9 +52,7 @@ func getServer(u string) (URL *url.URL, err error) {
 		lastServerIndex = 0
 	}
 
-	s := fmt.Sprintf("%s%s", serverList[lastServerIndex], u)
-
-	URL, err = url.Parse(s)
+	URL, err = url.Parse(serverList[lastServerIndex])
 
 	fmt.Println(URL)
 	lastServerIndex++
