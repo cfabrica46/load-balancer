@@ -8,7 +8,8 @@ import (
 
 func main() {
 
-	http.HandleFunc("/", hola1)
+	http.HandleFunc("/hola", hola1)
+	http.HandleFunc("/adios", adios)
 
 	err := http.ListenAndServe(":8004", nil)
 
@@ -20,5 +21,11 @@ func main() {
 func hola1(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "Hola-4\n")
+
+}
+
+func adios(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintf(w, "Adios-4\n")
 
 }

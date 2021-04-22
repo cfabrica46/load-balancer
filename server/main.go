@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -19,6 +20,8 @@ var (
 
 func main() {
 
+	log.SetFlags(log.Lshortfile)
+
 	http.HandleFunc("/", forwardRequest)
 
 	err := http.ListenAndServe(":8080", nil)
@@ -31,7 +34,7 @@ func main() {
 
 func forwardRequest(w http.ResponseWriter, r *http.Request) {
 
-	URL, err := getServer()
+	URL, err := getServer(r.URL.Path)
 
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
@@ -43,13 +46,17 @@ func forwardRequest(w http.ResponseWriter, r *http.Request) {
 	rProxy.ServeHTTP(w, r)
 }
 
-func getServer() (URL *url.URL, err error) {
+func getServer(u string) (URL *url.URL, err error) {
 
 	if lastServerIndex == len(serverList) {
 		lastServerIndex = 0
 	}
 
-	URL, err = url.Parse(serverList[lastServerIndex])
+	s := fmt.Sprintf("%s%s", serverList[lastServerIndex], u)
+
+	URL, err = url.Parse(s)
+
+	fmt.Println(URL)
 	lastServerIndex++
 	return
 }
