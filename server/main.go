@@ -18,13 +18,15 @@ var (
 	lastServerIndex = 0
 )
 
+type HttpHandler struct{}
+
 func main() {
 
 	log.SetFlags(log.Lshortfile)
 
-	http.HandleFunc("/", forwardRequest)
+	handler := HttpHandler{}
 
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", handler)
 
 	if err != nil {
 		log.Fatal(err)
@@ -32,7 +34,7 @@ func main() {
 
 }
 
-func forwardRequest(w http.ResponseWriter, r *http.Request) {
+func (h HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	URL, err := getServer(r.URL.Path)
 
@@ -42,7 +44,6 @@ func forwardRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rProxy := httputil.NewSingleHostReverseProxy(URL)
-
 	rProxy.ServeHTTP(w, r)
 }
 
